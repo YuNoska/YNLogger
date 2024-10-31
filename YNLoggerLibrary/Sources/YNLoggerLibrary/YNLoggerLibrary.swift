@@ -1,18 +1,24 @@
 import Foundation
 import os
 
-fileprivate let logger: Logger = {
+fileprivate var basicInfo: String {
     let fileName: String = (#file as NSString).lastPathComponent
     let function: String = #function
     let line: Int = #line
-    let category: String = "\(fileName) \(function) L\(line)"
+    return "\(fileName) > \(function) > L\(line)"
+}
 
+fileprivate let logger: Logger = {
     // https://developer.apple.com/documentation/os/logger/3551621-init
     return Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "DefaultSubsystem",
-        category: category
+        category: basicInfo
     )
 }()
+
+public func devLog(_ msg: String) {
+    print("[\(basicInfo)] \(msg)")
+}
 
 public func debugLog(_ msg: String) {
     logger.debug("\(msg)")
